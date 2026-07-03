@@ -5,4 +5,3 @@ dagster>=1.13.0
 dagster-dbt>=0.29.0
 dagster-webserver>=1.13.0
 google-cloud-pubsub>=2.0.0
-resend>=2.0.0
