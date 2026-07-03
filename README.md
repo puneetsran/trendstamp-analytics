@@ -35,8 +35,10 @@ dbt test    # runs the not_null/unique tests defined in models/staging/_sources.
 | `dbt/models/staging/` | 1:1 views over trendstamp.com's production tables (`topic_snapshots`, `digest_subscribers`, `topic_follows`) |
 | `dbt/models/marts/` | Real rollups: daily topic/rank rotation, daily signup growth with a cumulative window function |
 | `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
+| `scripts/send_daily_email.py` | Reads the latest mart-table rollups and emails a summary via Resend |
 | `orchestration/definitions.py` | Dagster job + daily schedule that runs the dbt pipeline |
 | `streaming/` | Real-time signup event pipeline (Supabase Realtime -> GCP Pub/Sub), contrasted with the daily batch dbt models — see `streaming/README.md` |
+| `.github/workflows/daily-email.yml` | Scheduled GitHub Action: `dbt run` then `send_daily_email.py`, independent of the Dagster dev process |
 
 ## Orchestration
 
@@ -55,4 +57,5 @@ Opens a local UI to trigger a manual run or watch the daily 9am schedule.
 - [x] Verified end-to-end against the real database (5/5 models, 10/10 tests passing)
 - [x] Dagster orchestrator with a daily schedule
 - [x] Streaming component (Supabase Realtime -> GCP Pub/Sub, live running total) — code written, needs your GCP setup to run for real (see `streaming/README.md`)
+- [x] Daily email rollup via GitHub Actions (code written, needs repo secrets configured to run for real — see `TODO.md`)
 - [ ] Cost-optimization pass writeup on the underlying GCP project
