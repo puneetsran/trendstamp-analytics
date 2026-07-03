@@ -1,3 +1,6 @@
 dbt-postgres>=1.10.0
 supabase>=2.0.0
 python-dotenv>=1.0.0
+dagster>=1.13.0
+dagster-dbt>=0.29.0
+dagster-webserver>=1.13.0

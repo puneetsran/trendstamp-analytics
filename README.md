@@ -35,13 +35,23 @@ dbt test    # runs the not_null/unique tests defined in models/staging/_sources.
 | `dbt/models/staging/` | 1:1 views over trendstamp.com's production tables (`topic_snapshots`, `digest_subscribers`, `topic_follows`) |
 | `dbt/models/marts/` | Real rollups: daily topic/rank rotation, daily signup growth with a cumulative window function |
 | `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
-| `orchestration/` | Airflow/Dagster DAG that runs `dbt run` on a schedule (not yet built) |
+| `orchestration/definitions.py` | Dagster job + daily schedule that runs the dbt pipeline |
+
+## Orchestration
+
+```bash
+cd .. # back to project root
+.venv/bin/dagster dev -f orchestration/definitions.py
+```
+
+Opens a local UI to trigger a manual run or watch the daily 9am schedule.
 
 ## Status
 
 - [x] dbt project scaffolded against real schema
 - [x] Staging models for all 3 production tables
 - [x] Two mart models with tests
-- [ ] Orchestrator (Airflow or Dagster) running this on a schedule
+- [x] Verified end-to-end against the real database (5/5 models, 10/10 tests passing)
+- [x] Dagster orchestrator with a daily schedule
 - [ ] Streaming component (Pub/Sub or Kafka toy pipeline)
 - [ ] Cost-optimization pass writeup on the underlying GCP project
