@@ -1,7 +1,7 @@
 # trendstamp-analytics
 
-A dbt analytics pipeline that reads [trending-now](../trending-now)'s real Supabase data and
-builds daily rollups: topic rotation and rank history, and digest signup growth.
+A dbt analytics pipeline that reads [trendstamp.com](https://www.trendstamp.com)'s real Supabase
+data and builds daily rollups: topic rotation and rank history, and digest signup growth.
 
 ## Setup
 
@@ -32,7 +32,7 @@ dbt test    # runs the not_null/unique tests defined in models/staging/_sources.
 
 | Path | What |
 |---|---|
-| `dbt/models/staging/` | 1:1 views over trending-now's production tables (`topic_snapshots`, `digest_subscribers`, `topic_follows`) |
+| `dbt/models/staging/` | 1:1 views over trendstamp.com's production tables (`topic_snapshots`, `digest_subscribers`, `topic_follows`) |
 | `dbt/models/marts/` | Real rollups: daily topic/rank rotation, daily signup growth with a cumulative window function |
 | `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
 | `orchestration/` | Airflow/Dagster DAG that runs `dbt run` on a schedule (not yet built) |
