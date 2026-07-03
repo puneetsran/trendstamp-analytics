@@ -1,0 +1,47 @@
+# trendstamp-analytics
+
+A dbt analytics pipeline that reads [trending-now](../trending-now)'s real Supabase data and
+builds daily rollups: topic rotation and rank history, and digest signup growth.
+
+## Setup
+
+```bash
+# 1. Python env (use a real Python, not a bleeding-edge one dbt hasn't caught up to)
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# 2. Create the scoped database role (once, in Supabase's SQL Editor)
+#    Run scripts/setup_db_role.sql there first.
+
+# 3. Configure connection
+cp .env.example .env   # fill in SUPABASE_DB_HOST / SUPABASE_DB_PASSWORD from step 2
+```
+
+## Run the dbt pipeline
+
+```bash
+cd dbt
+export DBT_PROFILES_DIR=.
+set -a; source ../.env; set +a
+dbt debug   # confirms the connection works before anything else
+dbt run     # builds staging views + mart tables in the analytics schema
+dbt test    # runs the not_null/unique tests defined in models/staging/_sources.yml
+```
+
+## What's here
+
+| Path | What |
+|---|---|
+| `dbt/models/staging/` | 1:1 views over trending-now's production tables (`topic_snapshots`, `digest_subscribers`, `topic_follows`) |
+| `dbt/models/marts/` | Real rollups: daily topic/rank rotation, daily signup growth with a cumulative window function |
+| `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
+| `orchestration/` | Airflow/Dagster DAG that runs `dbt run` on a schedule (not yet built) |
+
+## Status
+
+- [x] dbt project scaffolded against real schema
+- [x] Staging models for all 3 production tables
+- [x] Two mart models with tests
+- [ ] Orchestrator (Airflow or Dagster) running this on a schedule
+- [ ] Streaming component (Pub/Sub or Kafka toy pipeline)
+- [ ] Cost-optimization pass writeup on the underlying GCP project

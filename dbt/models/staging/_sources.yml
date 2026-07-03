@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: trendstamp
+    description: Production tables from the trending-now Supabase database (read-only).
+    schema: public
+    tables:
+      - name: topic_snapshots
+        description: Daily clustered/named trending topics, one row per topic per day.
+        loaded_at_field: created_at
+        columns:
+          - name: id
+            tests: [unique, not_null]
+          - name: snapshot_date
+            tests: [not_null]
+          - name: slug
+            tests: [not_null]
+      - name: digest_subscribers
+        description: Email digest signups, anonymous or linked to a signed-in user.
+        columns:
+          - name: id
+            tests: [unique, not_null]
+          - name: email
+            tests: [unique, not_null]
+      - name: topic_follows
+        description: Signed-in users following a topic by title/keywords.
+        columns:
+          - name: id
+            tests: [unique, not_null]
