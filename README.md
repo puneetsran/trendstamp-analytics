@@ -36,6 +36,7 @@ dbt test    # runs the not_null/unique tests defined in models/staging/_sources.
 | `dbt/models/marts/` | Real rollups: daily topic/rank rotation, daily signup growth with a cumulative window function |
 | `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
 | `orchestration/definitions.py` | Dagster job + daily schedule that runs the dbt pipeline |
+| `streaming/` | Real-time signup event pipeline (Supabase Realtime -> GCP Pub/Sub), contrasted with the daily batch dbt models — see `streaming/README.md` |
 
 ## Orchestration
 
@@ -53,5 +54,5 @@ Opens a local UI to trigger a manual run or watch the daily 9am schedule.
 - [x] Two mart models with tests
 - [x] Verified end-to-end against the real database (5/5 models, 10/10 tests passing)
 - [x] Dagster orchestrator with a daily schedule
-- [ ] Streaming component (Pub/Sub or Kafka toy pipeline)
+- [x] Streaming component (Supabase Realtime -> GCP Pub/Sub, live running total) — code written, needs your GCP setup to run for real (see `streaming/README.md`)
 - [ ] Cost-optimization pass writeup on the underlying GCP project

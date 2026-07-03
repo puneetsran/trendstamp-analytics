@@ -7,3 +7,6 @@ dbt/logs/
 *.duckdb
 CLAUDE.md
 dbt/.user.yml
+TODO.local.md
+TODO.md
+.tmp_dagster_home_*/
