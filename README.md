@@ -37,6 +37,7 @@ dbt test    # runs the not_null/unique tests defined in models/staging/_sources.
 | `scripts/setup_db_role.sql` | Creates the low-privilege `dbt_analytics` role — run once in Supabase |
 | `orchestration/definitions.py` | Dagster job + daily schedule that runs the dbt pipeline |
 | `streaming/` | Real-time signup event pipeline (Supabase Realtime -> GCP Pub/Sub), contrasted with the daily batch dbt models — see `streaming/README.md` |
+| `tests/` | Python unit tests for the streaming pipeline (`.venv/bin/python -m pytest tests/`) — no credentials or network needed |
 
 ## Orchestration
 
@@ -55,4 +56,5 @@ Opens a local UI to trigger a manual run or watch the daily 9am schedule.
 - [x] Verified end-to-end against the real database (5/5 models, 10/10 tests passing)
 - [x] Dagster orchestrator with a daily schedule
 - [x] Streaming component (Supabase Realtime -> GCP Pub/Sub, live running total) — code written, needs your GCP setup to run for real (see `streaming/README.md`)
+- [x] Unit tests for the streaming event mapping and running totals (`tests/`, pytest)
 - [ ] Cost-optimization pass writeup on the underlying GCP project
